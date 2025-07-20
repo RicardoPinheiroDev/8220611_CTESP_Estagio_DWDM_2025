@@ -56,6 +56,20 @@ class Client extends Authenticatable implements FilamentUser, \Illuminate\Contra
         'additional_contacts' => 'array',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            // Delete corresponding user when client is deleted
+            if ($model->user_id) {
+                \App\Models\User::where('id', $model->user_id)->delete();
+            } elseif ($model->email) {
+                \App\Models\User::where('email', $model->email)->delete();
+            }
+        });
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active && $panel->getId() === 'client';

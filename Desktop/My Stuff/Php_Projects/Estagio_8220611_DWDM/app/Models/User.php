@@ -48,6 +48,21 @@ class User extends Authenticatable
         });
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->type === UserType::ADMIN;
+    }
+
+    public function isEmployee(): bool
+    {
+        return $this->type === UserType::EMPLOYEE;
+    }
+
+    public function isClient(): bool
+    {
+        return $this->type === UserType::CLIENT;
+    }
+
     public function canAccessAdminPanel(): bool
     {
         if (in_array($this->type, [UserType::ADMIN, UserType::EMPLOYEE])) {

@@ -11,11 +11,21 @@ return new class extends Migration
     {
        
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('status')->default(true);
-            $table->string('type')->default('admin');
-            $table->boolean('admin_access_granted')->default(false);
-            $table->uuid('granted_by')->nullable();
-            $table->timestamp('granted_at')->nullable();
+            if (!Schema::hasColumn('users', 'status')) {
+                $table->boolean('status')->default(true);
+            }
+            if (!Schema::hasColumn('users', 'type')) {
+                $table->string('type')->default('admin');
+            }
+            if (!Schema::hasColumn('users', 'admin_access_granted')) {
+                $table->boolean('admin_access_granted')->default(false);
+            }
+            if (!Schema::hasColumn('users', 'granted_by')) {
+                $table->uuid('granted_by')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'granted_at')) {
+                $table->timestamp('granted_at')->nullable();
+            }
         });
 
        

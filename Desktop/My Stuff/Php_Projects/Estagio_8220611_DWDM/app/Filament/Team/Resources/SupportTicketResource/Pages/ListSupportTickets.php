@@ -13,7 +13,7 @@ class ListSupportTickets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            // Team operators cannot create tickets - only view and manage existing ones
         ];
     }
 }

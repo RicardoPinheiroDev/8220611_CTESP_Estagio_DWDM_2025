@@ -34,6 +34,13 @@ class Team extends Model
         static::creating(function ($model) {
             $model->id = (string) \Illuminate\Support\Str::uuid();
         });
+
+        static::deleting(function ($model) {
+            // Delete corresponding user when team member is deleted
+            if ($model->email) {
+                \App\Models\User::where('email', $model->email)->delete();
+            }
+        });
     }
 
 

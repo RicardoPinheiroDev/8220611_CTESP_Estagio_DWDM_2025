@@ -16,22 +16,54 @@ class CreateTeam extends CreateRecord
         if (isset($data['promote_user_id']) && $data['promote_user_id']) {
             $user = \App\Models\User::find($data['promote_user_id']);
             if ($user) {
-                $user->update([
-                    'type' => UserType::EMPLOYEE,
-                    'status' => true,
+                // Create team member from existing user
+                $team = \App\Models\Team::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'password' => $user->password,
+                    'type' => $data['type'] ?? UserType::EMPLOYEE,
+                    'status' => $data['status'] ?? true,
+                    'department_id' => $data['department_id'],
                 ]);
-                return $user;
+
+                // Also create corresponding user if not exists
+                \App\Models\User::firstOrCreate(
+                    ['email' => $user->email],
+                    [
+                        'name' => $user->name,
+                        'password' => $user->password,
+                        'type' => $data['type'] ?? UserType::EMPLOYEE,
+                        'status' => $data['status'] ?? true,
+                    ]
+                );
+
+                return $team;
             }
         }
 
-        $user = \App\Models\User::create([
+        $hashedPassword = Hash::make($data['password']);
+        
+        // Create new team member
+        $team = \App\Models\Team::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'type' => UserType::EMPLOYEE,
+            'password' => $hashedPassword,
+            'type' => $data['type'] ?? UserType::EMPLOYEE,
             'status' => $data['status'] ?? true,
+            'department_id' => $data['department_id'],
         ]);
 
-        return $user;
+        // Also create corresponding user (always create, update if exists)
+        \App\Models\User::updateOrCreate(
+            ['email' => $data['email']],
+            [
+                'name' => $data['name'],
+                'password' => $hashedPassword,
+                'type' => $data['type'] ?? UserType::EMPLOYEE,
+                'status' => $data['status'] ?? true,
+            ]
+        );
+
+        return $team;
     }
 }
