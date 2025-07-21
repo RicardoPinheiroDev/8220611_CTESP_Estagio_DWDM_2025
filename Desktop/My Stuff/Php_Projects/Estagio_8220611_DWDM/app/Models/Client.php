@@ -60,8 +60,31 @@ class Client extends Authenticatable implements FilamentUser, \Illuminate\Contra
     {
         parent::boot();
 
+        static::creating(function ($model) {
+            if (!$model->user_id) {
+                $user = \App\Models\User::create([
+                    'name' => $model->name,
+                    'email' => $model->email,
+                    'password' => $model->password,
+                    'type' => 'client',
+                    'status' => $model->is_active ?? true,
+                ]);
+                $model->user_id = $user->id;
+            }
+        });
+
+        static::updating(function ($model) {
+            if ($model->user_id) {
+                \App\Models\User::where('id', $model->user_id)->update([
+                    'name' => $model->name,
+                    'email' => $model->email,
+                    'password' => $model->password,
+                    'status' => $model->is_active ?? true,
+                ]);
+            }
+        });
+
         static::deleting(function ($model) {
-            // Delete corresponding user when client is deleted
             if ($model->user_id) {
                 \App\Models\User::where('id', $model->user_id)->delete();
             } elseif ($model->email) {
