@@ -43,10 +43,17 @@ class FinancialMovementResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label('Method')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'bank_transfer' => 'Bank Transfer',
+                        'mbway' => 'MbWay',
+                        'paypal' => 'PayPal',
+                        default => $state ?? '—',
+                    })
                     ->placeholder('—'),
-                Tables\Columns\TextColumn::make('reference_number')
-                    ->label('Reference')
-                    ->placeholder('—'),
+                Tables\Columns\TextColumn::make('mbway_phone')
+                    ->label('MBWay Number')
+                    ->placeholder('—')
+                    ->formatStateUsing(fn ($record) => $record && $record->payment_method === 'mbway' ? ($record->mbway_phone ?? '—') : '—'),
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
                     ->money('EUR')

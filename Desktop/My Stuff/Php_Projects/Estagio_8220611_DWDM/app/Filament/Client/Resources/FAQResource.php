@@ -21,30 +21,36 @@ class FAQResource extends Resource
 
     protected static ?string $pluralLabel = 'Frequently Asked Questions';
     
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = -5;
 
     public static function infolist(Infolist $infolist): Infolist
     {
         // Define FAQ sections and entries in a single array
         $faqs = [
+            '🌐 Getting Started with DigiUp' => [
+                ['platform_q1', 'What is DigiUp?', 'DigiUp is a web development company that creates professional websites for businesses looking to establish their online presence. As part of our comprehensive service, we also manage the hosting and domain services for the websites we build, ensuring your online presence stays active and secure.'],
+                ['platform_q2', 'What is this client management platform?', 'This platform allows you to manage the hosting and domain services for the website DigiUp created for your company. Through this dashboard, you can monitor your services, track renewal dates, manage payments, and get technical support for your website\'s infrastructure.'],
+                ['platform_q3', 'Why do I need this platform if DigiUp built my website?', 'While DigiUp handles the technical aspects of your website, this platform gives you visibility and control over your hosting and domain services. You can track costs, renewal dates, service usage, and communicate with our team about any technical needs or concerns regarding your website\'s infrastructure.'],
+            ],
             '🏢 Domain Management' => [
-                ['domain_q1', 'How to manage enterprise domain renewals?', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'],
-                ['domain_q2', 'What happens if my domain expires?', 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'],
-                ['domain_q3', 'How to change my domain DNS settings?', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'],
+                ['domain_q1', 'How do I manage my domain renewals through DigiUp?', 'DigiUp automatically tracks your domain expiration dates and sends you renewal notifications well in advance. You can view all your domains, their expiration dates, and renew them directly through your dashboard. We also offer auto-renewal options to ensure your domains never expire unexpectedly.'],
+                ['domain_q2', 'What happens if my domain expires?', 'If your domain expires, your website and email services will stop working. DigiUp sends multiple reminder notifications before expiration. If a domain does expire, we can help you recover it during the grace period, though additional fees may apply.'],
+                ['domain_q3', 'Can I transfer my existing domains to DigiUp management?', 'Yes! DigiUp can take over management of your existing domains. We\'ll handle the transfer process and ensure there\'s no downtime. Contact our support team to initiate a domain transfer to our management system.'],
             ],
             '💼 Hosting Services' => [
-                ['hosting_q1', 'How to access enterprise hosting services?', 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum.'],
-                ['hosting_q3', 'What is the available space on my hosting?', 'Ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat.'],
+                ['hosting_q1', 'What hosting services does DigiUp provide?', 'DigiUp offers comprehensive hosting management including shared hosting, VPS, dedicated servers, and cloud hosting solutions. We handle server maintenance, security updates, backups, and performance optimization so you can focus on your business.'],
+                ['hosting_q2', 'How can I monitor my hosting usage and performance?', 'Your DigiUp dashboard provides real-time insights into your hosting usage, including bandwidth consumption, storage space, and performance metrics. You can also set up alerts for when usage approaches your plan limits.'],
+                ['hosting_q3', 'What if I need to upgrade my hosting plan?', 'Upgrading your hosting plan is easy through the DigiUp platform. Simply navigate to your hosting services, select the upgrade option, and choose your new plan. We\'ll handle the migration process with minimal downtime.'],
             ],
-            '📊 Billing and Payments' => [
-                ['billing_q1', 'What enterprise payment methods are available?', 'Quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.'],
-                ['billing_q2', 'Where can I view my invoices?', 'Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.'],
-                ['billing_q3', 'How to request a company invoice?', 'Quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint.'],
+            '💳 Billing and Payments' => [
+                ['billing_q1', 'What payment methods does DigiUp accept?', 'DigiUp accepts multiple payment methods including bank transfers, MbWay, and PayPal. You can set up automatic payments to ensure your services are never interrupted due to late payments.'],
+                ['billing_q2', 'How do I view my invoices and payment history?', 'All your invoices and payment history are available in the Financial Movements section of your dashboard. You can download invoices, track payments, and view your account balance at any time.'],
+                ['billing_q3', 'Can I get consolidated billing for multiple services?', 'Yes! DigiUp provides consolidated billing for all your services. You\'ll receive a single invoice that includes all your hosting and domain services, making it easier to manage your expenses and accounting.'],
             ],
-            '🎯 Support' => [
-                ['support_q1', 'How does enterprise technical support work?', 'Molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias.'],
-                ['support_q2', 'What are the support operating hours?', 'Excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis.'],
-                ['support_q3', 'How to check support time spent?', 'Est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.'],
+            '🎯 Support & Assistance' => [
+                ['support_q1', 'How do I get technical support from DigiUp?', 'You can create support tickets directly through your dashboard. Our technical team will respond promptly to help resolve any issues with your hosting or domain services. We also provide phone and email support for urgent matters.'],
+                ['support_q2', 'What are DigiUp\'s support hours?', 'DigiUp provides business hours support Monday through Friday, 9 AM to 6 PM. For critical issues affecting your website availability, we offer emergency support contact options available 24/7.'],
+                ['support_q3', 'Do you provide migration services?', 'Yes! DigiUp offers free migration services when you sign up for our hosting management. Our technical team will handle moving your website, databases, and email accounts from your current provider to ensure a smooth transition.'],
             ],
         ];
 
@@ -61,7 +67,8 @@ class FAQResource extends Resource
 
             $sections[] = Section::make($title)
                 ->schema($entries)
-                ->collapsible(false);
+                ->collapsible()
+                ->collapsed();
         }
 
         return $infolist->schema($sections);

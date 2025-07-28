@@ -73,14 +73,57 @@ class FinancialMovementResource extends Resource
                 
                 Section::make('Payment Details')
                     ->schema([
-                        TextInput::make('payment_method')
+                        Select::make('payment_method')
                             ->label('Payment Method')
-                            ->placeholder('e.g., Bank Transfer, Cash, Card')
-                            ->maxLength(255),
+                            ->options([
+                                'bank_transfer' => 'Bank Transfer',
+                                'mbway' => 'MbWay',
+                                'paypal' => 'Paypal',
+                            ])
+                            ->required()
+                            ->live(),
+                        
+                        // Bank Transfer Fields
+                        TextInput::make('bank_iban')
+                            ->label('Bank IBAN')
+                            ->placeholder('e.g., PT50 0002 0123 1234 5678 9015 4')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
+                        TextInput::make('account_holder')
+                            ->label('Account Holder Name')
+                            ->placeholder('e.g., João Silva')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
                         TextInput::make('reference_number')
-                            ->label('Reference Number')
-                            ->placeholder('e.g., Transaction ID, Check Number')
-                            ->maxLength(255),
+                            ->label('Transaction Reference')
+                            ->placeholder('e.g., TRF20240127001')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
+                        
+                        TextInput::make('mbway_phone')
+                            ->label('MbWay Phone Number')
+                            ->placeholder('e.g., +351 912 345 678')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'mbway'),
+                        TextInput::make('mbway_reference')
+                            ->label('MbWay Phone Number')
+                            ->placeholder('e.g., +351 912 345 678')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'mbway'),
+                        
+                        // PayPal Fields
+                        TextInput::make('paypal_email')
+                            ->label('PayPal Email')
+                            ->placeholder('e.g., user@example.com')
+                            ->email()
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'paypal'),
+                        TextInput::make('paypal_transaction_id')
+                            ->label('PayPal Transaction ID')
+                            ->placeholder('e.g., 8RS12345A6789012B')
+                            ->maxLength(255)
+                            ->visible(fn ($get) => $get('payment_method') === 'paypal'),
+                        
                         DateTimePicker::make('processed_at')
                             ->label('Processed At')
                             ->default(now())

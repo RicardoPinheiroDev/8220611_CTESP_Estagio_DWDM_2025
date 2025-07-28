@@ -9,9 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('support_tickets', function (Blueprint $table) {
-            $table->string('ticket_number')->unique()->after('id');
-            $table->string('client_email')->nullable()->after('client_id');
-            $table->string('email_thread_id')->nullable()->after('client_email');
+            if (!Schema::hasColumn('support_tickets', 'ticket_number')) {
+                $table->string('ticket_number')->unique()->after('id');
+            }
+            if (!Schema::hasColumn('support_tickets', 'client_email')) {
+                $table->string('client_email')->nullable()->after('client_id');
+            }
+            if (!Schema::hasColumn('support_tickets', 'email_thread_id')) {
+                $table->string('email_thread_id')->nullable()->after('client_email');
+            }
         });
     }
 

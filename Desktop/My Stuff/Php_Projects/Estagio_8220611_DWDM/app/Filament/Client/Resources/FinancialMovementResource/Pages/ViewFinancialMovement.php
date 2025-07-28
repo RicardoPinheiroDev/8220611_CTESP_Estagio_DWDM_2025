@@ -52,10 +52,48 @@ class ViewFinancialMovement extends ViewRecord
                     ->schema([
                         TextEntry::make('payment_method')
                             ->label('Payment Method')
+                            ->formatStateUsing(fn (string $state): string => match ($state) {
+                                'bank_transfer' => 'Bank Transfer',
+                                'mbway' => 'MbWay',
+                                'paypal' => 'PayPal',
+                                default => $state ?? 'Not specified',
+                            })
                             ->placeholder('Not specified'),
+                        
+                        // Bank Transfer Details
+                        TextEntry::make('bank_iban')
+                            ->label('Bank IBAN')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'bank_transfer'),
+                        TextEntry::make('account_holder')
+                            ->label('Account Holder')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'bank_transfer'),
                         TextEntry::make('reference_number')
-                            ->label('Reference Number')
-                            ->placeholder('Not specified'),
+                            ->label('Transaction Reference')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'bank_transfer'),
+                        
+                        // MbWay Details
+                        TextEntry::make('mbway_phone')
+                            ->label('MbWay Phone')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'mbway'),
+                        TextEntry::make('mbway_reference')
+                            ->label('MbWay Transaction ID')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'mbway'),
+                        
+                        // PayPal Details
+                        TextEntry::make('paypal_email')
+                            ->label('PayPal Email')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'paypal'),
+                        TextEntry::make('paypal_transaction_id')
+                            ->label('PayPal Transaction ID')
+                            ->placeholder('Not specified')
+                            ->visible(fn ($record) => $record->payment_method === 'paypal'),
+                        
                         TextEntry::make('balance_after')
                             ->label('Account Balance After')
                             ->money('EUR')
