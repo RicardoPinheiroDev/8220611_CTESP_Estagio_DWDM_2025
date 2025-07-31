@@ -36,7 +36,6 @@ class Team extends Model
         });
 
         static::deleting(function ($model) {
-            // Delete corresponding user when team member is deleted
             if ($model->email) {
                 \App\Models\User::where('email', $model->email)->delete();
             }
