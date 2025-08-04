@@ -96,7 +96,6 @@ class TeamResource extends Resource
                             )
                             ->searchable()
                             ->placeholder('Search for existing user to promote')
-                            ->helperText('This will copy user data to create a team member')
                             ->reactive(),
                     ])
                     ->columns(1),

@@ -27,7 +27,7 @@ class Renewal extends Model
         'renewable_id',
         'renewable_type',
         'renewed_at',
-        'amount',
+        'amount', 
         'payment_method',
         'receipt_file',
         'internal_file',

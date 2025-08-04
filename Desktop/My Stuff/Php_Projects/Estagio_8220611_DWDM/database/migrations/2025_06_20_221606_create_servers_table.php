@@ -13,7 +13,7 @@ return new class extends Migration
             $table->uuid('id')->primary(); 
             $table->string('name');
             $table->string('ip_address', 45);
-            $table->string('provider', 100);
+            $table->string('provider');
             $table->string('location', 100);
             $table->text('notes')->nullable();
             $table->timestamps();

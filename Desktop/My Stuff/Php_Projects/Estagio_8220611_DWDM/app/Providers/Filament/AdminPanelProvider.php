@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(AdminLogin::class)
-            ->brandName('Admin Panel')
+            ->brandName('Operator Panel')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -42,6 +42,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\ClientStatsWidget::class,
             ])
             ->globalSearch(false)
+            ->sidebarCollapsibleOnDesktop(false)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

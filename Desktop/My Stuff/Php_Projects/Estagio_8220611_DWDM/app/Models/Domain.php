@@ -14,7 +14,7 @@ class Domain extends Model
     public $incrementing = false;
     
     /**
-     * The attributes that are mass assignable.
+     * 
      *
      * @var array<int, string>
      */
@@ -33,7 +33,7 @@ class Domain extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * 
      *
      * @var array<string, string>
      */
