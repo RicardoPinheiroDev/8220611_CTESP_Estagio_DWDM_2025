@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Models\Domain;
+use App\Models\FinancialMovement;
 use App\Models\Hosting;
 use App\Models\Invoice;
 use App\Models\SupportTicket;
 use App\Models\TicketReply;
 use App\Observers\DomainObserver;
+use App\Observers\FinancialMovementObserver;
 use App\Observers\HostingObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\SupportTicketObserver;
@@ -34,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
         SupportTicket::observe(SupportTicketObserver::class);
         TicketReply::observe(TicketReplyObserver::class);
         Domain::observe(DomainObserver::class);
+        FinancialMovement::observe(FinancialMovementObserver::class);
     }
 }

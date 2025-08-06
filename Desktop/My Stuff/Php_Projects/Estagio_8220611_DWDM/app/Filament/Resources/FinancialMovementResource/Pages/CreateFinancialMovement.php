@@ -10,6 +10,11 @@ class CreateFinancialMovement extends CreateRecord
 {
     protected static string $resource = FinancialMovementResource::class;
 
+    protected function getCreateAnotherFormAction(): \Filament\Actions\Action
+    {
+        return parent::getCreateAnotherFormAction()->hidden();
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_by'] = Auth::id();

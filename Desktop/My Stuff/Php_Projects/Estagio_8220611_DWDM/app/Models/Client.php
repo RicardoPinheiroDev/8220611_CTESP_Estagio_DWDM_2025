@@ -189,4 +189,10 @@ class Client extends Authenticatable implements FilamentUser, \Illuminate\Contra
     {
         return $this->hasMany(Notification::class)->unread();
     }
+
+    public function financialMovements()
+    {
+        return $this->hasMany(FinancialMovement::class, 'client_id', 'id')
+            ->orderBy('created_at', 'desc');
+    }
 }

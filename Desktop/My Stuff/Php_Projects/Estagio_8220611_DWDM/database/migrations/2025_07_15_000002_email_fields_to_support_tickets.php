@@ -24,6 +24,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('support_tickets', function (Blueprint $table) {
+            // Drop unique index first for SQLite compatibility
+            if (Schema::hasColumn('support_tickets', 'ticket_number')) {
+                $table->dropUnique('support_tickets_ticket_number_unique');
+            }
+        });
+        
+        Schema::table('support_tickets', function (Blueprint $table) {
             $table->dropColumn(['ticket_number', 'client_email', 'email_thread_id']);
         });
     }

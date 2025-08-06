@@ -43,7 +43,7 @@ class User extends Authenticatable
             $model->id = (string) \Illuminate\Support\Str::uuid();
             
             if (!$model->type) {
-                $model->type = UserType::ADMIN;
+                $model->type = UserType::CLIENT;
             }
         });
     }

@@ -16,6 +16,8 @@ class FinancialMovementResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
+    protected static ?string $navigationGroup = 'Home';
+
     protected static ?string $navigationLabel = 'Financial Movements';
 
     protected static ?string $pluralLabel = 'Financial History';
@@ -59,6 +61,14 @@ class FinancialMovementResource extends Resource
                     ->money('EUR')
                     ->sortable()
                     ->color(fn ($state) => $state >= 0 ? 'success' : 'danger'),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Status')
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'paid',
+                        'danger' => 'cancelled',
+                    ])
+                    ->formatStateUsing(fn ($state) => ucfirst($state ?? 'pending')),
                 Tables\Columns\TextColumn::make('processed_at')
                     ->label('Processed At')
                     ->dateTime()
@@ -88,10 +98,47 @@ class FinancialMovementResource extends Resource
             ->actions([
                 ViewAction::make()
                     ->label('View Details'),
+                Tables\Actions\Action::make('mark_as_paid')
+                    ->label('Mark as Paid')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mark Payment as Paid')
+                    ->modalDescription('Are you sure you want to mark this financial movement as paid?')
+                    ->action(function (FinancialMovement $record) {
+                        $record->update([
+                            'status' => 'paid',
+                            'paid_at' => now(),
+                        ]);
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Payment Marked as Paid')
+                            ->body('The financial movement has been marked as paid.')
+                            ->success()
+                            ->send();
+                    })
+                    ->visible(fn (FinancialMovement $record) => 
+                        $record->getAttribute('type') === 'payment' && 
+                        ($record->getAttribute('status') ?? 'pending') === 'pending'
+                    ),
             ])
             ->defaultSort('processed_at', 'desc')
             ->toggleColumnsTriggerAction(fn () => null)
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('client_id', auth()->id()))
+            ->modifyQueryUsing(function (Builder $query) {
+                $client = auth('client')->user();
+                if (!$client) {
+                    return $query->whereNull('id'); // Return no results if not authenticated
+                }
+                
+                // Get the client's ID - try both direct property and getKey()
+                $clientId = $client->getKey() ?? $client->id ?? null;
+                
+                if (!$clientId) {
+                    return $query->whereNull('id'); // Return no results if no client ID found
+                }
+                
+                return $query->where('client_id', $clientId);
+            })
             ->heading('Your Financial Movements')
             ->description('View all financial transactions and account movements')
             ->emptyStateHeading('No Financial Movements')

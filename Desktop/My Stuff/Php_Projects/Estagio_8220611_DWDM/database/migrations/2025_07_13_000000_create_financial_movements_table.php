@@ -16,7 +16,15 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->text('description');
             $table->string('payment_method')->nullable();
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->timestamp('paid_at')->nullable();
+            $table->string('mbway_phone')->nullable();
+            $table->string('mbway_reference')->nullable();
+            $table->string('paypal_email')->nullable();
+            $table->string('paypal_transaction_id')->nullable();
             $table->string('reference_number')->nullable();
+            $table->string('bank_iban')->nullable();
+            $table->string('account_holder')->nullable();
             $table->decimal('balance_after', 10, 2)->nullable();
             $table->foreignUuid('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamp('processed_at')->nullable();

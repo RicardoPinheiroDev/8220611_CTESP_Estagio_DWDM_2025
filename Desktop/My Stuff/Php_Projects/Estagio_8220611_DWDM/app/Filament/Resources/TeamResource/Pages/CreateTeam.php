@@ -11,6 +11,11 @@ class CreateTeam extends CreateRecord
 {
     protected static string $resource = TeamResource::class;
 
+    protected function getCreateAnotherFormAction(): \Filament\Actions\Action
+    {
+        return parent::getCreateAnotherFormAction()->hidden();
+    }
+
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         if (isset($data['promote_user_id']) && $data['promote_user_id']) {

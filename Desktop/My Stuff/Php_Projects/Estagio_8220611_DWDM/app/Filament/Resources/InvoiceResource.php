@@ -75,7 +75,7 @@ class InvoiceResource extends Resource
                     ])
                     ->columns(2),
                 
-                Section::make('Files')
+                Section::make('Files (Optional)')
                     ->schema([
                         FileUpload::make('invoice_file')
                             ->label('Invoice File')
@@ -157,11 +157,7 @@ class InvoiceResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ])
+            ->bulkActions([])
             ->defaultSort('created_at', 'desc');
     }
 

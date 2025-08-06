@@ -34,21 +34,23 @@ class Hosting extends Model
 
     protected $fillable = [
         'client_id',
-        'account_name',
         'domain_id',
-        'plan_id',
+        'plan_name',
+        'storage_limit',
+        'plan_price',
+        'plan_features',
         'server_id',
         'starts_at',
         'expires_at',
         'status',
         'payment_status',
         'next_renewal_price',
-        'notes',
     ];
 
     protected $casts = [
         'starts_at' => 'datetime',
         'expires_at' => 'datetime',
+        'plan_price' => 'decimal:2',
         'next_renewal_price' => 'decimal:2',
     ];
 
@@ -70,10 +72,6 @@ class Hosting extends Model
         return $this->belongsTo(Domain::class);
     }
 
-    public function plan(): BelongsTo
-    {
-        return $this->belongsTo(HostingPlan::class);
-    }
 
     public function server(): BelongsTo
     {

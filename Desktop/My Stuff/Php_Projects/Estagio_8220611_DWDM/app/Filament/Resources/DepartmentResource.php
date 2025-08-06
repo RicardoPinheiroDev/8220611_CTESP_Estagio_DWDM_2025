@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DepartmentResource\Pages;
 use App\Models\Department;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
@@ -36,8 +36,13 @@ class DepartmentResource extends Resource
                 TextInput::make('department')
                     ->required()
                     ->maxLength(255),
-                Toggle::make('status')
-                    ->required(),
+                Select::make('status')
+                    ->required()
+                    ->options([
+                        1 => 'Active',
+                        0 => 'Inactive',
+                    ])
+                    ->default(1),
             ]);
     }
 

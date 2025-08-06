@@ -54,7 +54,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('type')
                     ->options(UserType::class)
                     ->required()
-                    ->default(UserType::ADMIN),
+                    ->default(UserType::CLIENT),
             ]);
     }
 

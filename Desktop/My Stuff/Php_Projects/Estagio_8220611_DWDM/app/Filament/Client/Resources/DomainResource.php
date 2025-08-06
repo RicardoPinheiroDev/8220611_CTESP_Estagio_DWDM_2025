@@ -15,6 +15,8 @@ class DomainResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
+    protected static ?string $navigationGroup = 'Home';
+
     protected static ?string $navigationLabel = 'Domains';
 
     protected static ?string $pluralLabel = 'Current Domains';

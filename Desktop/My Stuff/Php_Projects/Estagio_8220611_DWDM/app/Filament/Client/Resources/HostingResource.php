@@ -15,6 +15,8 @@ class HostingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cloud';
 
+    protected static ?string $navigationGroup = 'Home';
+
     protected static ?string $navigationLabel = 'Hosting';
 
     protected static ?string $pluralLabel = 'Current Hostings';

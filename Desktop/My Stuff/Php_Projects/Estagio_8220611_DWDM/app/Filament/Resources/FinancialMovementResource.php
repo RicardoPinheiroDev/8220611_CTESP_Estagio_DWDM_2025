@@ -25,7 +25,7 @@ class FinancialMovementResource extends Resource
 {
     protected static ?string $model = FinancialMovement::class;
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?string $modelLabel = 'Financial Movement';
+    protected static ?string $modelLamasbel = 'Financial Movement';
     protected static ?string $navigationLabel = 'Financial Movements';
     protected static ?string $navigationGroup = 'Financial';
     protected static ?int $navigationSort = 1;
@@ -76,36 +76,29 @@ class FinancialMovementResource extends Resource
                         Select::make('payment_method')
                             ->label('Payment Method')
                             ->options([
-                                'bank_transfer' => 'Bank Transfer',
                                 'mbway' => 'MbWay',
                                 'paypal' => 'Paypal',
                             ])
                             ->required()
                             ->live(),
                         
-                        // Bank Transfer Fields
-                        TextInput::make('bank_iban')
-                            ->label('Bank IBAN')
-                            ->placeholder('e.g., PT50 0002 0123 1234 5678 9015 4')
-                            ->maxLength(255)
-                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
-                        TextInput::make('account_holder')
-                            ->label('Account Holder Name')
-                            ->placeholder('e.g., João Silva')
-                            ->maxLength(255)
-                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
-                        TextInput::make('reference_number')
-                            ->label('Transaction Reference')
-                            ->placeholder('e.g., TRF20240127001')
-                            ->maxLength(255)
-                            ->visible(fn ($get) => $get('payment_method') === 'bank_transfer'),
+                        Select::make('status')
+                            ->label('Status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'paid' => 'Paid',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->default('pending')
+                            ->required()
+                            ->live(),
                         
+                        DateTimePicker::make('paid_at')
+                            ->label('Paid At')
+                            ->visible(fn ($get) => $get('status') === 'paid'),
+                        
+                        // MBWay Fields
                         TextInput::make('mbway_phone')
-                            ->label('MbWay Phone Number')
-                            ->placeholder('e.g., +351 912 345 678')
-                            ->maxLength(255)
-                            ->visible(fn ($get) => $get('payment_method') === 'mbway'),
-                        TextInput::make('mbway_reference')
                             ->label('MbWay Phone Number')
                             ->placeholder('e.g., +351 912 345 678')
                             ->maxLength(255)
@@ -157,6 +150,14 @@ class FinancialMovementResource extends Resource
                 TextColumn::make('payment_method')
                     ->label('Method')
                     ->placeholder('—'),
+                BadgeColumn::make('status')
+                    ->label('Status')
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'paid',
+                        'danger' => 'cancelled',
+                    ])
+                    ->formatStateUsing(fn ($state) => ucfirst($state ?? 'pending')),
                 TextColumn::make('description')
                     ->label('Description')
                     ->limit(40)
@@ -191,6 +192,29 @@ class FinancialMovementResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('mark_as_paid')
+                    ->label('Mark as Paid')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mark Payment as Paid')
+                    ->modalDescription('Are you sure you want to mark this financial movement as paid?')
+                    ->action(function (FinancialMovement $record) {
+                        $record->update([
+                            'status' => 'paid',
+                            'paid_at' => now(),
+                        ]);
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Payment Marked as Paid')
+                            ->body('The financial movement has been marked as paid.')
+                            ->success()
+                            ->send();
+                    })
+                    ->visible(fn (FinancialMovement $record) => 
+                        $record->type === 'payment' && 
+                        ($record->status ?? 'pending') === 'pending'
+                    ),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([])

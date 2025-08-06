@@ -6,19 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-  
     public function up(): void
     {
         Schema::create('registrars', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('website');
+            $table->string('api_endpoint');
+            $table->string('api_key');
+            $table->string('supported_tlds');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
 
-    
     public function down(): void
     {
         Schema::dropIfExists('registrars');

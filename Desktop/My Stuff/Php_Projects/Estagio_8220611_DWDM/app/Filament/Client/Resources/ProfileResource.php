@@ -22,6 +22,8 @@ class ProfileResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
+    protected static ?string $navigationGroup = 'Home';
+
     protected static ?string $navigationLabel = 'Profile';
 
     protected static ?string $modelLabel = 'Profile';

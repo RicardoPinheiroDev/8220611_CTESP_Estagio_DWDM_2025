@@ -77,7 +77,7 @@ class NotificationResource extends Resource
                     ->modalHeading('Clear All Notifications')
                     ->modalDescription('Are you sure you want to clear all your notifications? This action cannot be undone.')
                     ->action(function () {
-                        Notification::where('user_id', auth()->id())->delete();
+                        Notification::where('client_id', auth()->id())->delete();
                         
                         FilamentNotification::make()
                             ->title('Notifications cleared')
@@ -108,7 +108,23 @@ class NotificationResource extends Resource
     }
 
     public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::where('client_id', auth()->id())->unread()->count();
+    {    
+        $clientId = auth()->id();
+        
+        // Let's check the actual read_at values
+        $notifications = static::getModel()::where('client_id', $clientId)->get(['id', 'title', 'read_at']);
+        $unreadCount = static::getModel()::where('client_id', $clientId)->whereNull('read_at')->count();
+        
+        // Debug logging with more detail
+        \Log::info("Notification count debug", [
+            'client_id' => $clientId,
+            'total_notifications' => $notifications->count(),
+            'unread_notifications' => $unreadCount,
+            'notifications_data' => $notifications->map(function($n) {
+                return ['id' => $n->id, 'title' => $n->title, 'read_at' => $n->read_at];
+            })
+        ]);
+        
+        return (string) $unreadCount;
     }
 }

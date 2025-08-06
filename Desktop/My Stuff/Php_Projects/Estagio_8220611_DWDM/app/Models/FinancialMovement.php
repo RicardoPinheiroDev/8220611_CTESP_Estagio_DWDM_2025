@@ -37,6 +37,8 @@ class FinancialMovement extends Model
         'amount',
         'description',
         'payment_method',
+        'status',
+        'paid_at',
         'reference_number',
         'bank_iban',
         'account_holder',
@@ -53,6 +55,7 @@ class FinancialMovement extends Model
         'amount' => 'decimal:2',
         'balance_after' => 'decimal:2',
         'processed_at' => 'datetime',
+        'paid_at' => 'datetime',
     ];
 
     public function client()

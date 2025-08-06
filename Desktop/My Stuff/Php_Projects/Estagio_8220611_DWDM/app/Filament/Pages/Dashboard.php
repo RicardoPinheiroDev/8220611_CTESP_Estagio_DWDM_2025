@@ -6,6 +6,8 @@ use Filament\Pages\Dashboard as BaseDashboard;
 
 class Dashboard extends BaseDashboard
 {
+    protected static ?string $navigationGroup = 'Home';
+
     public function getTitle(): string
     {
         return 'Dashboard';

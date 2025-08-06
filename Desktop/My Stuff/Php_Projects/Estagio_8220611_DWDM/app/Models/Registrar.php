@@ -3,38 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
-/**
- * @property string $id
- * @property string $name
- * @property string $website
- * @property string|null $notes
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<Domain> $domains
- */
 class Registrar extends Model
 {
-    protected $keyType = 'string';
+    use HasFactory;
+
     public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'name',
         'website',
+        'api_endpoint',
+        'api_key',
+        'supported_tlds',
+        'status',
         'notes',
     ];
 
-    public static function boot()
+    protected $casts = [
+        'api_key' => 'encrypted',
+    ];
+
+    protected static function boot()
     {
         parent::boot();
-        static::creating(function ($model) {
-            $model->id = (string) \Illuminate\Support\Str::uuid();
-        });
-    }
 
-    public function domains(): HasMany
-    {
-        return $this->hasMany(Domain::class);
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
     }
 }

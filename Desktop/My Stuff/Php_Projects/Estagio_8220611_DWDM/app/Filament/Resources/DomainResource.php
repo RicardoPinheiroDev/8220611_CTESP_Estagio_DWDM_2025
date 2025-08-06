@@ -18,6 +18,8 @@ class DomainResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-ripple';
 
+    protected static ?string $navigationGroup = 'Home';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -94,6 +96,16 @@ class DomainResource extends Resource
             ])
 
             ->actions([
+                Tables\Actions\Action::make('view_info')
+                    ->label('More Info')
+                    ->icon('heroicon-o-eye')
+                    ->color('gray')
+                    ->modalHeading('Domain Information')
+                    ->modalContent(function (Domain $record) {
+                        return view('filament.modals.domain-info', ['domain' => $record]);
+                    })
+                    ->modalWidth('2xl')
+                    ->slideOver(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
