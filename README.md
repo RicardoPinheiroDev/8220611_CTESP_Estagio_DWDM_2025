@@ -1,5 +1,5 @@
 Ferramentas necessarias :
--  Apenas e preciso o laravel herd e fillament php para instalar as depencias necessárias
+-  Apenas e preciso o laravel herd e fillament php para instalar as dependencias necessárias
 
 Para ver as colunas em databse.sql primeiro é preciso usar o comando
 - php artisan migrate
