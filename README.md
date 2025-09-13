@@ -3,7 +3,7 @@ Ferramentas para instalar as dependencias em falta do projeto
 
 2º Dependencias necessárias do frontend e backend com composer
 - composer install
-- 
+
 3º Ver as colunas em databse.sql  é preciso usar o comando : 
 - php artisan migrate
 
