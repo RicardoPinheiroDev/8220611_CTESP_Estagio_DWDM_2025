@@ -7,6 +7,6 @@ Ferramentas para instalar as dependencias em falta do projeto
 3º Ver as colunas em databse.sql  é preciso usar o comando : 
 - php artisan migrate
 
-Para criar um utilizador admin é necessario utilizar o comando :
+4º Para criar um utilizador admin é necessario utilizar o comando :
 - php artisan make:filament-user
 
